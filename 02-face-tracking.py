@@ -8,11 +8,13 @@ led = pyb.LED(3)
 
 # Pan servo settings
 servo_pan_ch = 1        # Pan servo channel
+servo_pan_speed = 0.8   # Relative movement multiplier
 pulse_pan_min = 1000    # Pan minimum pulse (microseconds)
 pulse_pan_max = 2000    # Pan maximum pulse (microseconds)
 
 # Tilt servo settings
 servo_tilt_ch = 0       # Tilt servo channel
+servo_tilt_speed = 0.8  # Relative movement multiplier
 pulse_tilt_min = 1000   # Tilt minimum pulse (microseconds)
 pulse_tilt_max = 2000   # Tilt maximum pulse (microseconds)
 
@@ -142,8 +144,8 @@ while(True):
             diff_y = 0
 
         # Calculate how fast the servo should move based on distance
-        mov_x = dir_x * diff_x
-        mov_y = dir_y * diff_y
+        mov_x = dir_x * servo_pan_speed * diff_x
+        mov_y = dir_y * servo_tilt_speed * diff_y
 
         # Adjust camera position left/right and up/down
         servo_pos_x = servo_pos_x + mov_x

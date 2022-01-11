@@ -8,11 +8,13 @@ led = pyb.LED(3)
 
 # Pan servo settings
 servo_pan_ch = 1        # Pan servo channel
+servo_pan_speed = 0.8   # Relative movement multiplier
 pulse_pan_min = 1000    # Pan minimum pulse (microseconds)
 pulse_pan_max = 2000    # Pan maximum pulse (microseconds)
 
 # Tilt servo settings
 servo_tilt_ch = 0       # Tilt servo channel
+servo_tilt_speed = 0.8  # Relative movement multiplier
 pulse_tilt_min = 1000   # Tilt minimum pulse (microseconds)
 pulse_tilt_max = 2000   # Tilt maximum pulse (microseconds)
 
@@ -24,8 +26,8 @@ dir_y = -1              # Direction of servo movement (1 or -1)
 maestro_uart_ch = 1     # UART channel connected to Maestro board
 maestro_num_ch = 12     # Number of servo channels on the Maestro board
 baud_rate = 9600        # Baud rate of Mini Maestro servo controller
-speed_limit = 10        # Speed limit (0.25 us)/(10 ms) of servos
-accel_limit = 10        # Acceleration limit (0.25 us)/(10 ms)/(80 ms) of servos
+speed_limit = 15        # Speed limit (0.25 us)/(10 ms) of servos
+accel_limit = 15        # Acceleration limit (0.25 us)/(10 ms)/(80 ms) of servos
 speed_limit_min = 0     # Speed limit minimum (0 is infinite)
 speed_limit_max = 10000 # Speed limit maximum
 accel_limit_min = 0     # Acceleration limit minimum (0 is infinite)
@@ -181,9 +183,9 @@ while(True):
         if abs(diff_y) <= threshold_y:
             diff_y = 0
 
-        # Calculate how fast the servo should move based on distance
-        mov_x = dir_x * diff_x
-        mov_y = dir_y * diff_y
+        # Calculate the relative position the servos should move to based on distance
+        mov_x = dir_x * servo_pan_speed * diff_x
+        mov_y = dir_y * servo_tilt_speed * diff_y
 
         # Adjust camera position left/right and up/down
         servo_pos_x = servo_pos_x + mov_x

@@ -28,16 +28,17 @@ maestro_num_ch = 12     # Number of servo channels on the Maestro board
 baud_rate = 9600        # Baud rate of Mini Maestro servo controller
 speed_limit = 15        # Speed limit (0.25 us)/(10 ms) of servos
 accel_limit = 15        # Acceleration limit (0.25 us)/(10 ms)/(80 ms) of servos
-speed_limit_min = 0     # Speed limit minimum (0 is infinite)
+speed_limit_min = 0     # Speed limit minimum
 speed_limit_max = 10000 # Speed limit maximum
-accel_limit_min = 0     # Acceleration limit minimum (0 is infinite)
+accel_limit_min = 0     # Acceleration limit minimum
 accel_limit_max = 255   # Acceleration limit maximum
 
 # Commands (for talking to Maestro servo controller)
 baud_detect_byte = 0xAA;
-cmd_set_target = 0x84
-cmd_set_speed = 0x87
-cmd_set_accel = 0x89
+maestro_dev_num = 12;
+cmd_set_target = 0x04
+cmd_set_speed = 0x07
+cmd_set_accel = 0x09
 
 ###############################################################################
 # Functions
@@ -55,6 +56,7 @@ def servo_send_cmd(cmd, ch, payload):
     # Construct message
     msg = bytearray()
     msg.append(baud_detect_byte)
+    msg.append(maestro_dev_num)
     msg.append(cmd)
     msg.append(ch)
     msg.append(payload & 0x7F)
@@ -147,7 +149,7 @@ while(True):
     # Find faces in image
     objects = img.find_features(face_cascade, threshold=0.75, scale_factor=1.25)
 
-    # Print out all faces in image
+    # Find largest face in image
     largest_face_size = 0
     largest_face_bb = None
     for r in objects:

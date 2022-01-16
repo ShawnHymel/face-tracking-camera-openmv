@@ -37,7 +37,7 @@ while(True):
     # Find faces in image
     objects = img.find_features(face_cascade, threshold=0.75, scale_factor=1.25)
 
-    # Print out all faces in image
+    # Find largest face in image
     largest_face_size = 0
     largest_face_bb = None
     for r in objects:

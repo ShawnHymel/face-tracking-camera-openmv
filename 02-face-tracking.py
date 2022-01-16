@@ -28,6 +28,7 @@ maestro_num_ch = 12     # Number of servo channels on the Maestro board
 baud_rate = 9600        # Baud rate of Mini Maestro servo controller
 
 # Commands (for talking to Maestro servo controller)
+baud_detect_byte = 0xAA;
 cmd_set_target = 0x84
 
 ###############################################################################
@@ -45,6 +46,7 @@ def servo_send_cmd(cmd, ch, payload):
 
     # Construct message
     msg = bytearray()
+    msg.append(baud_detect_byte)
     msg.append(cmd)
     msg.append(ch)
     msg.append(payload & 0x7F)

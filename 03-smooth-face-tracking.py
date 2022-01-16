@@ -34,6 +34,7 @@ accel_limit_min = 0     # Acceleration limit minimum (0 is infinite)
 accel_limit_max = 255   # Acceleration limit maximum
 
 # Commands (for talking to Maestro servo controller)
+baud_detect_byte = 0xAA;
 cmd_set_target = 0x84
 cmd_set_speed = 0x87
 cmd_set_accel = 0x89
@@ -53,6 +54,7 @@ def servo_send_cmd(cmd, ch, payload):
 
     # Construct message
     msg = bytearray()
+    msg.append(baud_detect_byte)
     msg.append(cmd)
     msg.append(ch)
     msg.append(payload & 0x7F)
